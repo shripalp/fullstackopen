@@ -45,7 +45,12 @@ function App() {
       ],
     },
   ];
+  const renderCourse = courses.map((course, i) => (
+    <Course key={i} course={course} />
+  ));
+  //console.log(renderCourse);
 
-  return courses.map((course) => <Course key={course.id} course={course} />);
+  return renderCourse;
 }
+
 export default App;

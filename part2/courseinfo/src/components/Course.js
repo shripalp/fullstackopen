@@ -1,18 +1,19 @@
-import React from "react";
+//import React from "react";
 
 //console.log("Course app is working...");
 
 const Header = (props) => {
   //console.log(title);
   //console.log("header is working...", course);
-  return <h1>{props.course}</h1>;
+  return <h2>{props.course}</h2>;
 };
 
 const Part = (props) => (
-  <p>
-    {props.part.name}
-    {props.part.exercises}
-  </p>
+  <>
+    <p>
+      {props.part.name} {props.part.exercises}
+    </p>
+  </>
 );
 
 const Content = (props) => {
@@ -24,12 +25,13 @@ const Total = (props) => {
   return <h3>total of {total} exercises</h3>;
 };
 
-const Course = ({ course }) => {
+const Course = (props) => {
+  console.log(props);
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <Header course={props.course.name} />
+      <Content parts={props.course.parts} />
+      <Total parts={props.course.parts} />
     </div>
   );
 };
