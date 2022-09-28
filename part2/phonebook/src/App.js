@@ -57,13 +57,13 @@ const App = () => {
 
   return (
     <div>
-      <Search search={search} handleSearch={handleSearch} />
+      <Search value={search} onChange={handleSearch} />
       <Add
         handleNameChange={handleNameChange}
         handleNumberChange={handleNumberChange}
-        addPerson={addPerson}
-        newName={newName}
-        newNumber={newNumber}
+        onSubmit={addPerson}
+        name={{ value: newName, onChange: handleNameChange }}
+        number={{ value: newNumber, onChange: handleNumberChange }}
       />
       <Display persons={personsToShow} />
     </div>

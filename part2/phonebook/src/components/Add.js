@@ -2,17 +2,17 @@ const Add = (props) => {
   return (
     <>
       <h2>add a new</h2>
-      <form onSubmit={props.addPerson}>
+      <form onSubmit={props.onSubmit}>
         <div>
           <p>
             name:{" "}
-            <input value={props.newName} onChange={props.handleNameChange} />
+            <input value={props.name.value} onChange={props.name.onChange} />
           </p>
           <p>
             number:{" "}
             <input
-              value={props.newNumber}
-              onChange={props.handleNumberChange}
+              value={props.number.value}
+              onChange={props.number.onChange}
             />
           </p>
         </div>
