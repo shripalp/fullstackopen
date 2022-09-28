@@ -32,7 +32,7 @@ const App = () => {
     search === ""
       ? persons
       : persons.filter((person) =>
-          person["name"].toLowerCase().startsWith(search)
+          person["name"].toLowerCase().startsWith(search.toLowerCase())
         );
   const addPerson = (event) => {
     event.preventDefault();
