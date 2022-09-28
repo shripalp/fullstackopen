@@ -1,4 +1,4 @@
-const Add = (props) => {
+const Form = (props) => {
   return (
     <>
       <h2>add a new</h2>
@@ -24,4 +24,4 @@ const Add = (props) => {
   );
 };
 
-export default Add;
+export default Form;
