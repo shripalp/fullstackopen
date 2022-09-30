@@ -37,22 +37,15 @@ const App = () => {
 
     if (countryList.length < 10 && countryList.length > 1) {
       countryListFilter = countryList.map((countries) => countries.name.common);
-      setFilterCountries(countryListFilter);
-      console.log(countryListFilter);
     } else if (countryList.length === 1) {
       countryListFilter = countryList.map((country) => country);
-      setFilterCountries(countryListFilter);
-      console.log("one matched", countryListFilter);
     } else if (countryList.length > 10) {
       countryListFilter = ["too many matches, specify another filter", ".."];
-      setFilterCountries(countryListFilter);
     } else {
       countryListFilter = ["No match", ".."];
-      setFilterCountries(countryListFilter);
     }
-    //console.log(countryListFilter);
 
-    console.log("filtered", filterCountries);
+    setFilterCountries(countryListFilter);
   };
 
   return (
