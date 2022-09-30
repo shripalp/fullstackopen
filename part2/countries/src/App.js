@@ -40,10 +40,21 @@ const App = () => {
     } else if (countryList.length === 1) {
       countryListFilter = countryList.map((country) => country);
     } else if (countryList.length > 10) {
-      countryListFilter = ["too many matches, specify another filter", ".."];
+      countryListFilter = ["too many matches, specify another filter", " "];
     } else {
-      countryListFilter = ["No match", ".."];
+      countryListFilter = ["No Match", " "];
     }
+
+    setFilterCountries(countryListFilter);
+  };
+  const showCountry = (event) => {
+    console.log("button pressed", event.target.value);
+    countryListFilter = countries.filter((country) =>
+      country.name.common
+        .toLowerCase()
+        .startsWith(event.target.value.toLowerCase())
+    );
+    console.log(countryListFilter);
 
     setFilterCountries(countryListFilter);
   };
@@ -56,7 +67,7 @@ const App = () => {
         {filterCountries.length === 1 ? (
           <DisplayOne country={filterCountries} />
         ) : (
-          <Display country={filterCountries} />
+          <Display country={filterCountries} showCountry={showCountry} />
         )}
       </div>
     </>

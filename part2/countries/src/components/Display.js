@@ -1,6 +1,25 @@
-//import Person from "./Person";
-
 const Display = (props) => {
-  return props.country.map((country, i) => <p key={i}>{country}</p>);
+  if (props.country[1] === " ") {
+    props.country.pop();
+    //props.country.pop();
+  }
+  if (props.country.length === 1) {
+    return <h3>{props.country}</h3>;
+  } else {
+    return props.country.map((country, i) => {
+      return (
+        <div>
+          <p key={i}>{country}</p>
+          <button
+            type="button"
+            value={props.country[i]}
+            onClick={props.showCountry}
+          >
+            show
+          </button>
+        </div>
+      );
+    });
+  }
 };
 export default Display;

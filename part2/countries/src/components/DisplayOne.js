@@ -1,3 +1,5 @@
+import Weather from "./Weather";
+
 const DisplayOne = (props) => {
   return (
     <>
@@ -15,6 +17,7 @@ const DisplayOne = (props) => {
         alt="flag"
         style={{ width: "200px" }}
       />
+      <Weather capital={props.country[0].capital} />
     </>
   );
 };
