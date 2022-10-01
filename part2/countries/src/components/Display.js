@@ -8,8 +8,8 @@ const Display = (props) => {
   } else {
     return props.country.map((country, i) => {
       return (
-        <div>
-          <p key={i}>{country}</p>
+        <div key={i}>
+          <p>{country}</p>
           <button
             type="button"
             value={props.country[i]}
