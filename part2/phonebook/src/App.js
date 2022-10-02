@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+//import axios from "axios";
 
 import Search from "./components/Search";
 import Display from "./components/Display";
 import Form from "./components/Form";
+import contactService from "./services/contacts";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -45,17 +46,17 @@ const App = () => {
       setNewName("");
       return;
     }
-
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNumber("");
+    contactService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   const hook = () => {
     console.log("effect");
-    axios.get("http://localhost:3002/persons").then((response) => {
-      console.log("promise done");
-      setPersons(response.data);
+    contactService.getAll().then((initialContact) => {
+      setPersons(initialContact);
     });
   };
   useEffect(hook, []);
