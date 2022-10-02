@@ -47,16 +47,25 @@ const App = () => {
       return;
     }
     contactService.create(personObject).then((returnedPerson) => {
+      console.log(returnedPerson);
       setPersons(persons.concat(returnedPerson));
       setNewName("");
       setNewNumber("");
     });
   };
+  const removeContact = (event) => {
+    const id = event.target.id;
+    console.log(id);
+    contactService
+      .remove(id)
+      .then(setPersons(persons.filter((person) => person.id !== id)));
+  };
 
   const hook = () => {
     console.log("effect");
-    contactService.getAll().then((initialContact) => {
-      setPersons(initialContact);
+    contactService.getAll().then((allContact) => {
+      console.log(allContact);
+      setPersons(allContact);
     });
   };
   useEffect(hook, []);
@@ -71,7 +80,7 @@ const App = () => {
         name={{ value: newName, onChange: handleNameChange }}
         number={{ value: newNumber, onChange: handleNumberChange }}
       />
-      <Display persons={personsToShow} />
+      <Display removeContact={removeContact} persons={personsToShow} />
     </div>
   );
 };

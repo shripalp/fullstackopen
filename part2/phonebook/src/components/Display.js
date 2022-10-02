@@ -1,11 +1,14 @@
-import Person from "./Person";
-
 const Display = (props) => {
   return (
     <>
       <h2>Numbers</h2>
-      {props.persons.map((person) => (
-        <Person key={person.name} person={person} />
+      {props.persons.map((person, i) => (
+        <p key={i}>
+          {person.name} {person.number}
+          <button id={person.id} onClick={props.removeContact}>
+            delete
+          </button>
+        </p>
       ))}
     </>
   );
