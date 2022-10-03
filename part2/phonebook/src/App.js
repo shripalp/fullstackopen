@@ -33,25 +33,60 @@ const App = () => {
         );
   const addPerson = (event) => {
     event.preventDefault();
+    const duplicateContact = persons.find(
+      (person) => person.name === newName && person.number === newNumber
+    );
     console.log("button clicked", event.target);
 
     const personObject = {
-      name: newName,
-      number: newNumber,
+      name: newName.trim(),
+      number: newNumber.trim(),
       //id: persons.length + 1,
     };
+
     const names = persons.map((person) => person.name);
-    if (names.includes(newName)) {
+    //const numbers = persons.map((person) => person.number);
+    //const id = persons.map((person)=> person.id)
+    if (duplicateContact) {
       alert(`${newName} is already added to the phonebook`);
       setNewName("");
-      return;
-    }
-    contactService.create(personObject).then((returnedPerson) => {
-      console.log(returnedPerson);
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
       setNewNumber("");
-    });
+      return;
+    } else if (names.includes(personObject.name)) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        ) === true
+      ) {
+        const getContact = persons.find(
+          (person) => person.name === personObject.name
+        );
+        const changedContact = { ...getContact, number: newNumber };
+        console.log(changedContact);
+        contactService
+          .update(changedContact)
+          .then((retrunedContact) =>
+            setPersons(
+              persons.map((person) =>
+                person.id !== retrunedContact.id ? person : retrunedContact
+              )
+            )
+          );
+        setNewName("");
+        setNewNumber("");
+      } else {
+        alert("update cancelled");
+        setNewName("");
+        setNewNumber("");
+      }
+    } else {
+      contactService.create(personObject).then((returnedPerson) => {
+        //console.log(returnedPerson);
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+    }
   };
   const removeContact = (event) => {
     const id = event.target.id;
