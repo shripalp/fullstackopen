@@ -5,13 +5,14 @@ import Search from "./components/Search";
 import Display from "./components/Display";
 import Form from "./components/Form";
 import contactService from "./services/contacts";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
-  //const [showFilter, setShowFilter] = useState(true);
+  const [notificationMsg, setNotificationMsg] = useState(null);
 
   const handleNameChange = (event) => {
     //console.log(event.target.value);
@@ -29,12 +30,14 @@ const App = () => {
     search === ""
       ? persons
       : persons.filter((person) =>
-          person["name"].toLowerCase().startsWith(search.toLowerCase())
+          person.name.toLowerCase().startsWith(search.toLowerCase())
         );
+
   const addPerson = (event) => {
     event.preventDefault();
     const duplicateContact = persons.find(
-      (person) => person.name === newName && person.number === newNumber
+      (person) =>
+        person.name === newName.trim() && person.number === newNumber.trim()
     );
     console.log("button clicked", event.target);
 
@@ -45,8 +48,7 @@ const App = () => {
     };
 
     const names = persons.map((person) => person.name);
-    //const numbers = persons.map((person) => person.number);
-    //const id = persons.map((person)=> person.id)
+
     if (duplicateContact) {
       alert(`${newName} is already added to the phonebook`);
       setNewName("");
@@ -61,39 +63,98 @@ const App = () => {
         const getContact = persons.find(
           (person) => person.name === personObject.name
         );
-        const changedContact = { ...getContact, number: newNumber };
-        console.log(changedContact);
+        const changedContact = { ...getContact, number: personObject.number };
+
         contactService
           .update(changedContact)
-          .then((retrunedContact) =>
+          .then((retrunedContact) => {
+            setNotificationMsg({
+              text: `${retrunedContact.name} phone number is now updated`,
+              type: "notification",
+            });
+            setTimeout(() => {
+              setNotificationMsg(null);
+            }, 3000);
+
             setPersons(
               persons.map((person) =>
                 person.id !== retrunedContact.id ? person : retrunedContact
               )
-            )
-          );
-        setNewName("");
-        setNewNumber("");
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            setNotificationMsg({
+              text: `person already removed from the server`,
+              type: "error",
+            });
+          });
+        setTimeout(() => {
+          setNotificationMsg(null);
+        }, 5000);
       } else {
         alert("update cancelled");
         setNewName("");
         setNewNumber("");
       }
     } else {
-      contactService.create(personObject).then((returnedPerson) => {
-        //console.log(returnedPerson);
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-      });
+      contactService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setNotificationMsg({
+            text: `${returnedPerson.name} is added to the phonebook`,
+            type: "notification",
+          });
+          setTimeout(() => {
+            setNotificationMsg(null);
+          }, 3000);
+          //console.log(returnedPerson);
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          setNotificationMsg({
+            text: "server error",
+            type: "error",
+          });
+        });
+      setTimeout(() => {
+        setNotificationMsg(null);
+      }, 5000);
     }
   };
   const removeContact = (event) => {
     const id = event.target.id;
-    console.log(id);
-    contactService
-      .remove(id)
-      .then(setPersons(persons.filter((person) => person.id !== id)));
+    const n = event.target.name;
+    const message = `delete this person ${n}?`;
+    if (window.confirm(message) === true) {
+      contactService
+        .remove(id)
+        .then((removedPerson) => {
+          console.log(removedPerson);
+          setNotificationMsg({
+            text: `${n}  is removed from server`,
+            type: "notification",
+          });
+          setTimeout(() => {
+            setNotificationMsg(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setNotificationMsg({
+            text: `${n} already removed from server`,
+            type: "error",
+          });
+        });
+      setTimeout(() => {
+        setNotificationMsg(null);
+      }, 5000);
+
+      setPersons(persons.filter((person) => person.id !== id));
+    }
+    //console.log(id);
   };
 
   const hook = () => {
@@ -107,6 +168,9 @@ const App = () => {
 
   return (
     <div>
+      <h1>Phonebook</h1>
+
+      {notificationMsg !== null ? <Notification msg={notificationMsg} /> : null}
       <Search value={search} onChange={handleSearch} />
       <Form
         handleNameChange={handleNameChange}

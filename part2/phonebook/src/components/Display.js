@@ -5,7 +5,11 @@ const Display = (props) => {
       {props.persons.map((person, i) => (
         <p key={i}>
           {person.name} {person.number}
-          <button id={person.id} onClick={props.removeContact}>
+          <button
+            name={person.name}
+            id={person.id}
+            onClick={props.removeContact}
+          >
             delete
           </button>
         </p>
