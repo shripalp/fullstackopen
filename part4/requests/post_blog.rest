@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title":"jauu2",
+    "title":"tim",
     "author":"shripal",
     "url":"www.cnn.com",
     "likes":22
