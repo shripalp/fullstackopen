@@ -113,12 +113,6 @@ describe('update a blog', () => {
   })
 })
 
-// test('the first note is about HTTP methods', async () => {
-//   const response = await api.get('/api/blogs')
-
-//   expect(response.body[0].content).toBe('HTML is easy')
-// })
-
 describe('test one like', () => {
 
   test('test one like', () => {
