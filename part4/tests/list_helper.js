@@ -1,8 +1,5 @@
-
-
-const listHelper = require('../utils/list_helper')
-
-const blogs = [
+const Blog = require('../models/blog')
+const initialBlogs = [
   {
     _id: '5a422a851b54a676234d17f7',
     title: 'React patterns',
@@ -53,33 +50,27 @@ const blogs = [
   }
 ]
 
-describe('test one like', () => {
+const dummy = (blogs) => {
+  blogs.map(i => i.likes)
+  return 1
+}
+
+const totalLikes = (blogs) => blogs.map(i => i.likes).reduce((a,b) => a+b)
+
+const favoriteBlog = (blogs) => {
+  const likesArray = blogs.map(i => i.likes)
+  return Math.max(...likesArray)
+}
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(note => note.toJSON())
+}
 
 
-  test('test one like', () => {
-    const result = listHelper.dummy(blogs)
-    expect(result).toBe(1)
+module.exports = {
+  dummy, totalLikes, favoriteBlog, initialBlogs, blogsInDb
+}
 
-  })
-
-
-})
-
-describe('total likes', () => {
-
-  test('when list has only one blog, equals the likes of that', () => {
-    const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(36)
-  })
-})
-
-describe('favorite', () => {
-  test('test most favourite blog', () => {
-    const result = listHelper.favoriteBlog(blogs)
-    expect(result).toBe(12)
-
-  })
-
-})
 
 
