@@ -1,10 +1,12 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNocmlwYWwiLCJpZCI6IjYzNWVhZGI4MjlmZTk1ZjBlODRiMzQxNCIsImlhdCI6MTY2NzE0OTI5OCwiZXhwIjoxNjY3MTUyODk4fQ._xOszH20UXmyG023A-RXzngi6F6g74v9AezUJM8peQ0
 
 {
-    "title":"tim",
+    "title":"hello there, I am shripal",
     "author":"shripal",
     "url":"www.cnn.com",
-    "likes":22
+    "likes":22,
+    "userId": "635eadb829fe95f0e84b3414"
     
 }
