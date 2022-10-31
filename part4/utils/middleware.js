@@ -49,13 +49,13 @@ const userExtractor = (request, response, next) => {
   //console.log(authorization)
   if (authorization && authorization.toLowerCase().startsWith('bearer')){
     request.user = request.body.userId
-    console.log(request.user)
+    //console.log(request.user)
   } else {
     request.user = null
   }
   next()
 }
-  
+
 module.exports = {
   requestLogger,
   unknownEndpoint,

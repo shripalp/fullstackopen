@@ -10,7 +10,7 @@ blogsRouter.get('/', async (request, response) => {
     .find({}).populate('user', { username: 1, name: 1 })
 
   response.json(blogs)
-});
+})
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
@@ -42,11 +42,13 @@ blogsRouter.get('/:id',  async(request, response) => {
     response.status(404).end()
   }
 })
-    
+
 
 blogsRouter.delete('/:id', async (request, response) => {
   const body = request.body
-  
+  const username = request.user
+  console.log(username)
+
   //const token = getTokenFrom(request)
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {
@@ -60,8 +62,8 @@ blogsRouter.delete('/:id', async (request, response) => {
   } else {
     return response.status(401).json({ error: 'unauthorized' });
   }
-  
-    
+
+
 })
 
 
@@ -83,6 +85,6 @@ blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
   response.json(updatedBlog)
 })
-    
+
 
 module.exports = blogsRouter
