@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/63505564abac5601c31f0cc4
+Content-Type: application/json
+
+{
+    "title":"ben2",
+    "author":"shripal",
+    "url":"www.cnn.com",
+    "likes":22
+    
+}
