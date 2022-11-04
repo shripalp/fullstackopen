@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNocmlwYWwiLCJpZCI6IjYzNWVhZGI4MjlmZTk1ZjBlODRiMzQxNCIsImlhdCI6MTY2NzIzOTQ5MCwiZXhwIjoxNjY3MjQzMDkwfQ.OMmF70Esgi2lcDJXLFa_JIhtGWdOjrqHmzp71M147ZI
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNocmlwYWwiLCJpZCI6IjYzNWVhZGI4MjlmZTk1ZjBlODRiMzQxNCIsImlhdCI6MTY2NzUxMzYxMiwiZXhwIjoxNjY3NTE3MjEyfQ.-g2Wl2YJ9kmweAPlo2UPkczXZ0Pj_b67lqEwBXf5w6s
 
 {
-    "title":"hello there, I am shripal. how are you",
+    "title":"hello there, I am shripal. how are you. \\",
     "author":"shripal",
     "url":"www.cnn.com",
     "likes":27,

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production node index.js",
     "lint": "eslint .",
+    "build:ui":"rm -rf build && cd ./bloglist-frontend && npm run build && cp -r build ../",
     "dev": "NODE_ENV=development nodemon index.js",
     "deploy:full": "npm run build:ui && npm run deploy",
     "deploy": "fly deploy",
