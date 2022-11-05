@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
+import Notification from "./components/Notification";
 import loginService from './services/login'
 
 const App = () => {
@@ -8,7 +9,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] =useState('')
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [notificationMsg, setNotificationMsg] = useState(null);
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
@@ -95,9 +96,12 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setNotificationMsg({
+        text: 'wrong username or password',
+        type: "error",
+      })
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotificationMsg(null)
       }, 5000)
     }
   }
@@ -119,12 +123,23 @@ const App = () => {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
+        setNotificationMsg({
+          text: `${blogObject.title} by ${user.username} added`,
+          type: 'notification',
+        });
+        setTimeout(() => {
+          setNotificationMsg(null);
+        }, 5000);
+
         
       })
       .catch((error) => {
-        setErrorMessage(`${error.message}`);
+        setNotificationMsg({
+          text: `${error.message}`,
+          type: 'error',
+        });
         setTimeout(() => {
-          setErrorMessage(null);
+          setNotificationMsg(null);
         }, 5000);
         
       });
@@ -153,6 +168,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      {notificationMsg !== null ? <Notification msg={notificationMsg} /> : null}
       {user === null ?
       loginForm() :
       
