@@ -3,16 +3,18 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Notification from "./components/Notification";
 import loginService from './services/login'
+import BlogForm from './components/Blogform';
+import LoginForm from './components/Loginform';
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] =useState('')
+  
   const [notificationMsg, setNotificationMsg] = useState(null);
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
+  //const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -29,57 +31,61 @@ const App = () => {
     }
   }, [])
 
-
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+  const loginForm = () => {
+   
+    return (
+      <Togglable buttonLabel='login'>
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
         />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
+      </Togglable>
+    )
+  }
+  const createBlog = (blogObject) => {
+    blogService
+      .create(blogObject)
+      .then((returnedBlog) => {
+        setBlogs(blogs.concat(returnedBlog));
+        setNotificationMsg({
+          text: `${blogObject.title} by ${user.username} added`,
+          type: 'notification',
+        });
+        setTimeout(() => {
+          setNotificationMsg(null);
+        }, 5000);
+
+        
+      })
+      .catch((error) => {
+        setNotificationMsg({
+          text: `${error.message}`,
+          type: 'error',
+        });
+        setTimeout(() => {
+          setNotificationMsg(null);
+        }, 5000);
+        
+      });
+  }
+  const blogForm = () => {
+
+    return (
+
+      <Togglable buttonLabel='create'>
+        <BlogForm
+          createBlog={createBlog}
+          
         />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
+      </Togglable>
 
+    )
+  }
 
-  const blogForm = () => (
-    <form onSubmit={createBlog}>
-      <label for="title">title</label>
-      <input
-        id="title"
-        value={title}
-        onChange={handleTitleChange}
-      /><br></br>
-      <label for="author">author</label>
-       <input
-       id="author"
-        value={author}
-        onChange={handleAuthorChange}
-      /><br></br>
-      <label for="url">url</label>
-       <input
-       id="url"
-        value={url}
-        onChange={handleUrlChange}
-      /><br></br>
-      
-      <button type="submit">create</button>
-    </form>  
-  )
+  
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -111,60 +117,9 @@ const App = () => {
     setUser(window.localStorage.getItem('loggedBlogappUser'))
   }
 
-  const createBlog = (event) => {
-    event.preventDefault();
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    };
+  
 
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-        setNotificationMsg({
-          text: `${blogObject.title} by ${user.username} added`,
-          type: 'notification',
-        });
-        setTimeout(() => {
-          setNotificationMsg(null);
-        }, 5000);
-
-        
-      })
-      .catch((error) => {
-        setNotificationMsg({
-          text: `${error.message}`,
-          type: 'error',
-        });
-        setTimeout(() => {
-          setNotificationMsg(null);
-        }, 5000);
-        
-      });
-
-    console.log("button clicked", event.target);
-  };
-
-  const handleTitleChange = (event) => {
-    console.log(event.target.value);
-    //console.log("new title is...", newTitle);
-    setTitle(event.target.value);
-  };
-
-  const handleAuthorChange = (event) => {
-    console.log(event.target.value);
-    //console.log("new note is...", newNote);
-    setAuthor(event.target.value);
-  };
-
-  const handleUrlChange = (event) => {
-    console.log(event.target.value);
-    //console.log("new note is...", newNote);
-    setUrl(event.target.value);
-  };
-
+  
   return (
     <div>
       <h2>blogs</h2>
