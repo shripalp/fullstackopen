@@ -9,12 +9,12 @@ import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  
   const [notificationMsg, setNotificationMsg] = useState(null);
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
-  //const [loginVisible, setLoginVisible] = useState(false)
+  //const blogFormRef = useRef()
+  
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,6 +30,36 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    
+    try {
+      const user = await loginService.login({
+        username, password,
+      })
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      ) 
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setNotificationMsg({
+        text: 'wrong username or password',
+        type: "error",
+      })
+      setTimeout(() => {
+        setNotificationMsg(null)
+      }, 5000)
+    }
+  }
+
+  const handleLogout =  () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(window.localStorage.getItem('loggedBlogappUser'))
+  }
 
   const loginForm = () => {
    
@@ -84,64 +114,31 @@ const App = () => {
 
     )
   }
-
   
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      ) 
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      setNotificationMsg({
-        text: 'wrong username or password',
-        type: "error",
-      })
-      setTimeout(() => {
-        setNotificationMsg(null)
-      }, 5000)
-    }
-  }
-
-  const handleLogout =  () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    setUser(window.localStorage.getItem('loggedBlogappUser'))
-  }
-
-  
-
-  
+     
   return (
     <div>
       <h2>blogs</h2>
       {notificationMsg !== null ? <Notification msg={notificationMsg} /> : null}
       {user === null ?
       loginForm() :
-      
-      <div>
+       <div>
        <p>
         {user.name} logged-in
         <button onClick={handleLogout}>logout</button>
        </p>
-       <h2>create new</h2>
-        {blogForm()}
-        {blogs.map(blog =>
+       {blogForm()}
+
+       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
-      </div>
-                 
+       </div>
+       
        }
       
-      </div>
+      
+    </div>
   )
 }
 

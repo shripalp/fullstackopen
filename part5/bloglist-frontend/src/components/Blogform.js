@@ -34,6 +34,8 @@ const BlogForm = (props) => {
 }
         
     return (
+        <div>
+             <h2>create new</h2>
         <form onSubmit={addBlog}>
           <label for="title">title</label>
           <input
@@ -56,6 +58,9 @@ const BlogForm = (props) => {
           
           <button type="submit">create</button>
         </form>  
+
+        </div>
+       
       )
 }
 
