@@ -1,4 +1,4 @@
-import { useState } from 'react' 
+import { useState } from 'react'
 import blogService from '../services/blogs'
 
 
@@ -6,9 +6,9 @@ import blogService from '../services/blogs'
 const Blog = ({ blog, setBlogs, blogs }) => {
 
   const [visible, setVisible]=useState(false)
-  
+
   const toggleVisible = { display: visible ? 'none' : '' }
-  
+
 
   const blogStyle = {
     paddingTop: 10,
@@ -23,23 +23,23 @@ const Blog = ({ blog, setBlogs, blogs }) => {
 
   const handleLikes =  async (event) => {
     //console.log("button clicked", event.target);
-    event.preventDefault();
-    const updatedBlog = await blogService.update(blog.id,{...blog, likes: blog.likes+1})
+    event.preventDefault()
+    const updatedBlog = await blogService.update(blog.id,{ ...blog, likes: blog.likes+1 })
     const oldBlogID = blogs.findIndex(blog => blog.id === updatedBlog.id)
     const clonedBlogs = [...blogs]
     clonedBlogs.splice(oldBlogID,1,updatedBlog)
     setBlogs(clonedBlogs)
-    }
+  }
 
   const removeBlog = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const id = blog.id
     const message = `remove ${blog.title} by ${JSON.parse(window.localStorage.getItem('loggedBlogappUser')).name}?`
     if (window.confirm(message) === true) {
       blogService.remove(blog.id)
-      .then(setBlogs(blogs.filter((blog) => blog.id !== id)))
+        .then(setBlogs(blogs.filter((blog) => blog.id !== id)))
     }
-    
+
   }
 
   return (
@@ -50,21 +50,21 @@ const Blog = ({ blog, setBlogs, blogs }) => {
       </div>
       <div style={toggleVisible}>
         <p>
-        {blog.url}
+          {blog.url}
         </p>
         <p>
-        likes: {blog.likes}
-        <button onClick={handleLikes}>like</button>
+                    likes: {blog.likes}
+          <button onClick={handleLikes}>like</button>
         </p>
         <p>
-        {JSON.parse(window.localStorage.getItem('loggedBlogappUser')).name}
-        <button onClick={removeBlog}>remove</button>
+          {JSON.parse(window.localStorage.getItem('loggedBlogappUser')).name}
+          <button onClick={removeBlog}>remove</button>
         </p>
-                       
-        </div>
-        
-    
-  </div>
-)}
+
+      </div>
+
+
+    </div>
+  )}
 
 export default Blog

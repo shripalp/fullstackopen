@@ -13,27 +13,27 @@ const create =  async (newObject) => {
   }
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
-};
+}
 
 const update = async (id, newObject) => {
   const config = {
     headers: { Authorization: token },
   }
-  const response = await axios.put(`${baseUrl}/${id}`, newObject, config);
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
   return response.data
-};
+}
 
 const remove = (id) => {
   const config = {
     headers: { Authorization: token },
   }
-  return axios.delete(`${baseUrl}/${id}`, config);
-};
+  return axios.delete(`${baseUrl}/${id}`, config)
+}
 
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
-};
+}
 
 
 const blogService = {
