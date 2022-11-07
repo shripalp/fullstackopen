@@ -1,8 +1,12 @@
 import { useState } from 'react' 
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+
+
+const Blog = ({ blog, setBlogs, blogs }) => {
 
   const [visible, setVisible]=useState(false)
+  
   const toggleVisible = { display: visible ? 'none' : '' }
   
 
@@ -17,10 +21,15 @@ const Blog = ({ blog }) => {
     setVisible(!visible)
   }
 
-  const handleLikes = () => {
-   
-
-  }
+  const handleLikes =  async (event) => {
+    console.log("button clicked", event.target);
+    event.preventDefault();
+    const response = await blogService.update(blog.id,{...blog, likes: blog.likes+1})
+    const oldBlogID = blogs.findIndex(b => b.id === response.id)
+    const clonedBlogs = [...blogs]
+    clonedBlogs.splice(oldBlogID,1,response)
+    setBlogs(clonedBlogs)
+    }
 
   return (
     <div style={blogStyle}>

@@ -24,7 +24,9 @@ const BlogForm = (props) => {
         {
             title: title,
             author: author,
-            url: url
+            url: url,
+            
+
           }
 
     )
