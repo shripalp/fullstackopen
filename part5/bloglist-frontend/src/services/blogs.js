@@ -24,7 +24,10 @@ const update = async (id, newObject) => {
 };
 
 const remove = (id) => {
-  return axios.delete(`${baseUrl}/${id}`);
+  const config = {
+    headers: { Authorization: token },
+  }
+  return axios.delete(`${baseUrl}/${id}`, config);
 };
 
 const getAll = () => {
